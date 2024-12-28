@@ -17,6 +17,11 @@ jobs:
     # Step 1: Checkout the repository code
     - name: Checkout code
       uses: actions/checkout@v2  # This checks out the repository's code
+    
+    # This will print each command that is being executed
+    - name: Set up for debugging
+      run: |
+        set -x   
 
     # Step 2: Build the Docker image for Nginx web server (including the custom nginx.conf)
     - name: Build Nginx Docker Image
