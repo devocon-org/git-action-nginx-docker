@@ -2,7 +2,10 @@ on: [push]
 
 jobs:
   hello_world_job:
-    runs-on: kali-git-runner
+    runs-on: 
+      - self-hosted 
+      - kali-git-runner
+      
     name: A job to say hello
     steps:
       # To use this repository's private action,
