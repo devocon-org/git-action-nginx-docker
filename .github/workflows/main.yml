@@ -14,69 +14,30 @@ jobs:
     runs-on: [self-hosted, linux, ken-runner]
 
     steps:
-    # Step 1: Checkout the repository code
-    - name: Checkout code
-      uses: actions/checkout@v2  # This checks out the repository's code
-    
-    # This will print each command that is being executed
-    - name: Set up for debugging
-      run: |
-        set -x   
+      # Checkout the repository
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    # Step 2: Build the Docker image for Nginx web server (including the custom nginx.conf)
-    - name: Build Nginx Docker Image
-      run: |
-        # Ensure the current directory contains Dockerfile and nginx.conf
-        docker build -t nginx-webserver .
+      # Set up Docker Buildx (optional but recommended for caching)
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
 
-    # Step 3: Create directory for volumes (for the web content)
-    - name: Create directory for volumes
-      run: |
-        mkdir -p /tmp/nginx_volume
+      # Build the Docker image
+      - name: Build Docker image
+        run: |
+          docker build -t my-nginx-webserver .
 
-    # Step 4: Copy the Nginx config and content files to the volume directory
-    - name: Copy Nginx config and web content to volume directories
-      run: |
-        cp -r ./nginx/nginx.conf /tmp/nginx_volume/      # Nginx config
-        cp -r ./src/* /tmp/nginx_volume/                 # Web content from src
+      # Run the Docker container
+      - name: Run Docker container
+        run: |
+          docker run -d -p 8080:80 --name nginx-container my-nginx-webserver
 
-    # Step 5: Run Nginx Docker container with volume mounts
-    - name: Run Nginx Docker Container
-      run: |
-        docker run -d -p 8080:80 --name nginx-container \
-        -v /tmp/nginx_volume:/usr/share/nginx/html:ro \
-        nginx-webserver
+      # Verify the container is running by getting logs
+      - name: Verify container is running
+        run: |
+          docker logs -f nginx-container
 
-    # Step 6: Verify Docker container is running
-    - name: Verify Docker container is running
-      run: |
-        docker ps
-
-    # Step 7: Test Nginx server by accessing it via curl
-    - name: Test Nginx server (localhost:8080)
-      run: |
-        curl http://localhost:8080
-
-
-
-
-
-# on: [push]
-
-# jobs:
-#   hello_world_job:
-#     runs-on: ubuntu-24.04
-#     name: A job to say hello
-#     steps:
-#       # To use this repository's private action,
-#       # you must check out the repository
-#       - name: Checkout
-#         uses: actions/checkout@v4
-#       - name: Hello world action step
-#         uses: ./ # Uses an action in the root directory
-#         id: hello
-#         with:
-#           who-to-greet: 'Mona the Octocat'
-#       # Use the output from the `hello` step
-#       - name: Get the output time
-#         run: echo "The time was ${{ steps.hello.outputs.time }}"
+      # Step 7: Test Nginx server by accessing it via curl
+      - name: Test Nginx server (localhost:8080)
+        run: |
+          curl http://localhost:8080

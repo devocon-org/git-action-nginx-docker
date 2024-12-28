@@ -1,17 +1,23 @@
-# Use the official Nginx image as the base image
+# Use the official Nginx image
 FROM nginx:latest
 
-# Expose port 80 to be used by the container
-EXPOSE 80
+# Remove the default Nginx configuration file
+RUN rm /etc/nginx/conf.d/default.conf
 
-# Copy the Nginx configuration file into the container
+# Copy the custom Nginx config (vhost and main config)
 COPY nginx/nginx.conf /etc/nginx/nginx.conf
+COPY nginx/vhost.conf /etc/nginx/conf.d/vhost.conf
 
-# Set the working directory where Nginx will serve files
-WORKDIR /usr/share/nginx/html
+RUN mkdir -p /var/www/project
+# Copy the website content to the correct location in the container
+COPY ./src /var/www/project
+
+# Expose port 80 to allow external access to the server
+EXPOSE 80
 
 # Run Nginx in the foreground
 CMD ["nginx", "-g", "daemon off;"]
+
 
 
 # # Container image that runs your code
