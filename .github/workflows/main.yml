@@ -11,7 +11,7 @@ on:
 jobs:
   build_and_run_nginx:
     # Runs on your self-hosted runner
-    runs-on: [self-hosted, linux, kali-linux-runner]
+    runs-on: [self-hosted, linux, ken-runner]
 
     steps:
     # Step 1: Checkout the repository code
