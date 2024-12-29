@@ -10,7 +10,7 @@ on:
 
 jobs:
 
-  production_deploy:
+  Staging_deploy:
     if: github.repository == 'devocon-org/git-action-nginx-docker'
     runs-on: ubuntu-latest
 
@@ -18,14 +18,14 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Deploy to production
+      - name: Deploy to Staging
         run: |
-          echo "Deploying to production environment..."
+          echo "Deploying to Staging environment..."
           # Add your deployment script/command here, such as:
-          # ssh user@production-server 'deploy command'
+          # ssh user@Staging-server 'deploy command'
 
   nginx_build_deploy:
-    needs: production_deploy
+    needs: Staging_deploy
     runs-on: [self-hosted, linux, ken-runner]
     steps:
       - name: Checkout repository
