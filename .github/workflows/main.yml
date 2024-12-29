@@ -40,7 +40,7 @@ jobs:
 
       - name: Test Nginx server (localhost:8080)
         run: |
-          curl http://localhost:8080
+          curl -I http://localhost:8080
 
 # Checks the repo exits
   production-deploy:
