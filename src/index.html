@@ -1,15 +1,146 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
+    <meta name="Nginx" content="width=device-width, initial-scale=1.0">
+    <title>Nginx Status</title>
+    <style>
+        /* Reset some default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        h5 {
+            text-align: center;
+            font-size: 1.2em;
+            color: #555;
+            margin-top: 20px;
+        }
+
+        .status-box {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 600px;
+            margin: 20px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .status-box h2 {
+            font-size: 1.5em;
+            color: #4CAF50;
+        }
+
+        .status-box p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+
+        .status-box .server-info {
+            margin-top: 15px;
+            font-size: 1em;
+            color: #777;
+        }
+
+        /* Loading spinner animation */
+        .loader {
+            border: 8px solid #f3f3f3; /* Light gray */
+            border-top: 8px solid #4CAF50; /* Green */
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 2s linear infinite;
+            margin: 0 auto;
+        }
+
+        /* Animation for spinning */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #888;
+        }
+
+        .btn-restart {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: background-color 0.3s;
+        }
+
+        .btn-restart:hover {
+            background-color: #45a049;
+        }
+
+        .status-box p span {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+    </style>
 </head>
+
 <body>
-    <h1>Nginx_status</h1>
-    <h5>
-        HTTP/1.1 200 OK
-        Server: nginx/1.27.3
-    </h5>
+
+    <h1>Nginx Status Page</h1>
+
+    <!-- Loading spinner animation instead of "200 OK" -->
+    <h5>Loading Nginx status...</h5>
+
+    <div class="status-box">
+        <h2>Server Status</h2>
+        <div class="loader"></div> <!-- Spinner animation -->
+        <p>
+            The server is currently running smoothly, and all configurations are correct. All the necessary modules are loaded, and Nginx is serving content without issues.
+        </p>
+        <div class="server-info">
+            <p>Uptime: <span>10 days, 15 hours</span></p>
+            <p>Active connections: <span>12</span></p>
+            <p>Server Load: <span>Low</span></p>
+        </div>
+
+        <button class="btn-restart" onclick="restartServer()">Restart Nginx</button>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Nginx Web Server</p>
+    </div>
+
+    <script>
+        function restartServer() {
+            alert("Restarting the server...");
+            // In a real-world scenario, you would send a request to the server to restart Nginx
+            // For example, using AJAX or a backend API endpoint.
+        }
+    </script>
+
 </body>
+
 </html>
