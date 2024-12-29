@@ -9,6 +9,20 @@ on:
 
 jobs:
 
+  production_deploy:
+    if: github.repository == 'devocon-org/git-action-dcoker-'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to production
+        run: |
+          echo "Deploying to production environment..."
+          # Add your deployment script/command here, such as:
+          # ssh user@production-server 'deploy command'
+
   nginx_build_deploy:
     runs-on: [self-hosted, linux, ken-runner]
     steps:
@@ -41,18 +55,3 @@ jobs:
       - name: Test Nginx server (localhost:8080)
         run: |
           curl -I http://localhost:8080
-
-# Checks the repo exits
-  production-deploy:
-    if: github.repository == 'devocon-org/git-action-dcoker-'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Deploy to production
-        run: |
-          echo "Deploying to production environment..."
-          # Add your deployment script/command here, such as:
-          # ssh user@production-server 'deploy command'
