@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nginx Status</title>
+    <style>
+        /* Reset some default styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            color: #333;
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #4CAF50;
+            margin-bottom: 20px;
+        }
+
+        h5 {
+            text-align: center;
+            font-size: 1.2em;
+            color: #555;
+        }
+
+        .status-box {
+            background-color: #fff;
+            border-radius: 8px;
+            padding: 20px;
+            max-width: 600px;
+            margin: 20px auto;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .status-box h2 {
+            font-size: 1.5em;
+            color: #4CAF50;
+        }
+
+        .status-box p {
+            font-size: 1.2em;
+            line-height: 1.6;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 0.9em;
+            color: #888;
+        }
+
+        /* Side-by-side loading text */
+        .loading-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .loading-text {
+            font-size: 1.5em;
+            color: #4CAF50;
+            font-weight: bold;
+            opacity: 0;
+            animation: fadeIn 1.5s ease-in-out infinite alternate;
+        }
+
+        .loading-text:nth-child(1) {
+            animation-delay: 0s;
+        }
+
+        .loading-text:nth-child(2) {
+            animation-delay: 0.5s;
+        }
+
+        .loading-text:nth-child(3) {
+            animation-delay: 1s;
+        }
+
+        /* Fade in/out animation */
+        @keyframes fadeIn {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Nginx Status Page</h1>
+    <h5>HTTP/1.1 200 OK | Server: nginx/1.27.3</h5>
+
+    <div class="status-box">
+        <h2>Server Status</h2>
+        <p>
+            The server is currently running smoothly, and all configurations are correct. All the necessary modules are loaded, and Nginx is serving content without issues.
+        </p>
+        <div class="server-info">
+            <p>Uptime: <span>10 days, 15 hours</span></p>
+            <p>Active connections: <span>12</span></p>
+            <p>Server Load: <span>Low</span></p>
+        </div>
+
+        <!-- Side-by-side loading text animation -->
+        <div class="loading-container">
+            <div class="loading-text">Loading...</div>
+            <div class="loading-text">Please wait...</div>
+            <div class="loading-text">Processing...</div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>&copy; 2024 Nginx Web Server</p>
+    </div>
+
+</body>
+</html>
