@@ -1,5 +1,4 @@
-name: Build and Run Nginx Web Server on Localhost
-
+name: Nginx Web Server Deployment
 on:
   push:
     branches:
@@ -9,31 +8,38 @@ on:
       - main
 
 jobs:
+
   build_and_run_nginx:
+  production-deploy:
+    if: github.repository == 'devocon-org/git-action-dcoker-'
     runs-on: [self-hosted, linux, ken-runner]
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # Stop and remove any existing container named "nginx-container"
-      - name: Stop and remove existing container (if any)
+      - name: Stop and remove containers with 'nginx' in the name
         run: |
-          if [ $(docker ps -q -f name=nginx-container) ]; then
-            echo "Stopping and removing existing container..."
-            docker stop nginx-container
-            docker rm nginx-container
+          # Get all container IDs that match 'nginx' in their name
+          containers=$(docker ps -a -q -f "name=nginx")
+
+          if [ -n "$containers" ]; then
+            echo "Stopping and removing containers with 'nginx' in their name..."
+            # Stop the containers if they are running
+            docker stop $containers || true
+            # Remove the containers
+            docker rm $containers || true
           else
-            echo "No existing container found."
+            echo "No containers with 'nginx' found."
           fi
 
       - name: Build Docker image
         run: |
-          docker build -t my-nginx-webserver .
+          docker build -t nginx/ken .
 
       - name: Run Docker container
         run: |
-          docker run -d -p 8080:80 --name nginx-container my-nginx-webserver
+          docker run -d -p 8080:80 --name uat-nginx-server nginx/ken
 
       - name: Test Nginx server (localhost:8080)
         run: |
