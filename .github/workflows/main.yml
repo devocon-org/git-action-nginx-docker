@@ -13,7 +13,6 @@ jobs:
   production-deploy:
     if: github.repository == 'devocon-org/git-action-dcoker-'
     runs-on: [self-hosted, linux, ken-runner]
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
