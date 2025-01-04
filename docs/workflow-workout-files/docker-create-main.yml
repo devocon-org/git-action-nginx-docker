@@ -1,0 +1,73 @@
+name: Nginx Web Server Deployment
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+
+  Staging_deploy:
+    if: github.repository == 'devocon-org/git-action-nginx-docker'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to Staging
+        run: |
+          echo "Deploying to Staging environment..."
+          # Add your deployment script/command here, such as:
+          # ssh user@Staging-server 'deploy command'
+
+  nginx_build_deploy:
+    needs: Staging_deploy
+    runs-on: [self-hosted, linux, ken-runner]
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # - name: Stop and remove containers with 'nginx' in the name
+      #   run: |
+      #     # Get all container IDs that match 'nginx' in their name
+      #     containers=$(docker ps -a -q -f "name=nginx")
+
+      #     if [ -n "$containers" ]; then
+      #       echo "Stopping and removing containers with 'nginx' in their name..."
+      #       # Stop the containers if they are running
+      #       docker stop $containers || true
+      #       # Remove the containers
+      #       docker rm $containers || true
+      #     else
+      #       echo "No containers with 'nginx' found."
+      #     fi
+
+      - name: Stop and remove containers with 'nginx' in the name
+        run: |
+          # Stop any running containers with 'nginx' in their name and remove them
+          docker stop $(docker ps -a -q -f "name=nginx") || true
+          docker rm $(docker ps -a -q -f "name=nginx") || true
+
+      - name: Build Docker image
+        run: |
+          docker build -t nginx/ken .
+
+      - name: Run Docker container with mounted volumes
+        run: |
+          docker run -d -p 8080:80 --name uat-nginx-server -v $PWD/nginx/nginx.conf:/etc/nginx/nginx.conf -v $PWD/src:/usr/share/nginx/html nginx/ken
+
+      # - name: Test Nginx server (localhost:8080)
+      #   run: |
+      #     curl -I http://localhost:8080
+
+      - name: Restart Docker container if changes or new files in nginx/ or src/
+        run: |
+          # Check if there are any changes or new files in nginx/ or src/ directories
+          git diff --exit-code --quiet nginx/ src/ || {
+            echo "Changes or new files detected in nginx/ or src/. Restarting container..."
+            docker restart uat-nginx-server
+          }
