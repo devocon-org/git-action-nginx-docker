@@ -4,9 +4,13 @@ on:
   push:
     branches:
       - main
+    paths-ignore:
+      - 'docs/**'
   pull_request:
     branches:
       - main
+    paths-ignore:
+      - 'docs/**'
 
 jobs:
   Staging_deploy:
@@ -42,7 +46,7 @@ jobs:
 
       - name: Run Docker container with mounted volumes
         run: |
-          docker run -d -p 8080:80 --name uat-nginx-server -v $PWD/nginx/nginx.conf:/etc/nginx/nginx.conf -v $PWD/src:/usr/share/nginx/html nginx/ken
+          docker run -d -p 8080:80 --name uat-nginx-server -v $PWD/nginx/nginx.conf:/etc/nginx/nginx.conf -v $PWD/src:/usr/share/nginx/html --log-driver=json-file nginx/ken
 
       - name: Restart Docker container if changes or new files in nginx/ or src/
         run: |
