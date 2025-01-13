@@ -44,7 +44,7 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t nginx/ken .
+          docker build -t nginx/ken:v1.0.0 .
 
       - name: Run Docker container with mounted volumes
         run: |
@@ -67,9 +67,7 @@ jobs:
       # Tag Docker image with a specific version or commit hash
       - name: Tag Docker image
         run: |
-          # Use commit SHA or version tag, such as "v1.0" or "latest"
-          # IMAGE_TAG="${GITHUB_SHA}"  # Use Git commit SHA as tag
-          IMAGE_TAG="v1.0.0"
+          IMAGE_TAG="${GITHUB_SHA}"  # Use Git commit SHA as tag
           docker tag nginx/ken ${{ secrets.DOCKER_USERNAME }}/nginx-ken:${IMAGE_TAG}
           # docker tag nginx/ken ${{ secrets.DOCKER_USERNAME }}/nginx-ken:latest  # Optionally tag as "latest"
 

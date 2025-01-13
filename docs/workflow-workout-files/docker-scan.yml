@@ -1,0 +1,23 @@
+name: 🧪 Test
+on: 
+  workflow_dispatch:
+    
+jobs:
+  test:
+    name: ☢ Test Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: 🛀 Checkout Self
+        uses: actions/checkout@v3
+      
+      - name: ⏬ Load Test Images
+        run: |
+          docker pull python:3.4-alpine
+          docker pull python:3.8.10-slim
+
+      - name: ☢ Scan Images
+        uses: spicyparrot/scan-images@trunk
+        id: python
+        with:
+          image_grep: "python"
+          severities: "CRITICAL,HIGH"   
