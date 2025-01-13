@@ -66,13 +66,14 @@ jobs:
       - name: Tag Docker image
         run: |
           # Use commit SHA or version tag, such as "v1.0" or "latest"
-          IMAGE_TAG="${GITHUB_SHA}"  # Use Git commit SHA as tag
+          # IMAGE_TAG="${GITHUB_SHA}"  # Use Git commit SHA as tag
+          IMAGE_TAG="v1.0.0"
           docker tag nginx/ken ${{ secrets.DOCKER_USERNAME }}/nginx-ken:${IMAGE_TAG}
-          docker tag nginx/ken ${{ secrets.DOCKER_USERNAME }}/nginx-ken:latest  # Optionally tag as "latest"
+          # docker tag nginx/ken ${{ secrets.DOCKER_USERNAME }}/nginx-ken:latest  # Optionally tag as "latest"
 
       # Push Docker image to Docker Hub
       - name: Push Docker image to Docker Hub
         run: |
           IMAGE_TAG="${GITHUB_SHA}"
           docker push ${{ secrets.DOCKER_USERNAME }}/nginx-ken:${IMAGE_TAG}
-          docker push ${{ secrets.DOCKER_USERNAME }}/nginx-ken:latest  # Push the "latest" tag
+          # docker push ${{ secrets.DOCKER_USERNAME }}/nginx-ken:latest  # Push the "latest" tag
